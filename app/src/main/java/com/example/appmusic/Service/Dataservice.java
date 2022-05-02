@@ -1,5 +1,6 @@
 package com.example.appmusic.Service;
 
+import com.example.appmusic.Model.ChuDeVaTheLoai;
 import com.example.appmusic.Model.Example;
 import com.example.appmusic.Model.Playlist;
 
@@ -14,4 +15,6 @@ public interface Dataservice {
 
     @GET("playlistforcurren.php")
     Call<List<Playlist>> GetplaylistCurrentDay();
+    @GET("chudevatheloaitrongngay.php")
+    Call<ChuDeVaTheLoai> GetCategoryMusic();
 }
