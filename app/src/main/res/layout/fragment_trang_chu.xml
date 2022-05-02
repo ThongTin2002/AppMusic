@@ -25,5 +25,10 @@
             android:id="@+id/fragmentchudevatheloai"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+        <androidx.fragment.app.FragmentContainerView
+            android:name="com.example.appmusic.Fragment.Fragment_Album_Hot"
+            android:id="@+id/fragmentalbum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 </ScrollView>
