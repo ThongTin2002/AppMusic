@@ -30,5 +30,10 @@
             android:id="@+id/fragmentalbum"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+        <androidx.fragment.app.FragmentContainerView
+            android:name="com.example.appmusic.Fragment.Fragment_BaiHat_Hot"
+            android:id="@+id/fragmentbaihathot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 </ScrollView>
