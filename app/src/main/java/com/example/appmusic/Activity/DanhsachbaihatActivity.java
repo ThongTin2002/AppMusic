@@ -3,6 +3,7 @@ package com.example.appmusic.Activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.appmusic.Adapter.DanhsachbaihatAdapter;
 import com.example.appmusic.Model.Baihat;
 import com.example.appmusic.Model.Example;
 import com.example.appmusic.R;
@@ -44,6 +46,7 @@ public class DanhsachbaihatActivity extends AppCompatActivity {
     FloatingActionButton floatingActionButton;
     ImageView imgdanhsachcakhuc;
     ArrayList<Baihat> mangbaihat;
+    DanhsachbaihatAdapter danhsachbaihatAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +68,9 @@ public class DanhsachbaihatActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Baihat>> call, Response<List<Baihat>> response) {
                 mangbaihat = (ArrayList<Baihat>) response.body();
-                Log.d("BBB", mangbaihat.get(0).getTenBaiHat());
+                danhsachbaihatAdapter = new DanhsachbaihatAdapter(DanhsachbaihatActivity.this, mangbaihat);
+                recyclerViewdanhsachbaihat.setLayoutManager(new LinearLayoutManager(DanhsachbaihatActivity.this));
+                recyclerViewdanhsachbaihat.setAdapter(danhsachbaihatAdapter);
             }
 
             @Override
