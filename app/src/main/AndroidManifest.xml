@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppMusic">
         <activity
+            android:name=".Activity.DanhsachtatcacacchudeActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.DanhsachcacplaylistActivity"
             android:exported="false" />
         <activity

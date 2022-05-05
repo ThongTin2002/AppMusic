@@ -2,6 +2,7 @@ package com.example.appmusic.Service;
 
 import com.example.appmusic.Model.Album;
 import com.example.appmusic.Model.Baihat;
+import com.example.appmusic.Model.ChuDe;
 import com.example.appmusic.Model.ChuDeVaTheLoai;
 import com.example.appmusic.Model.Example;
 import com.example.appmusic.Model.Playlist;
@@ -40,4 +41,6 @@ public interface Dataservice {
     @FormUrlEncoded
     @POST("danhsachbaihat.php")
     Call<List<Baihat>> GetDanhsachbaihattheotheloai(@Field("idtheloai") String idtheloai);
+    @GET("tatcachude.php")
+    Call<List<ChuDe>> GetAllChuDe();
 }
