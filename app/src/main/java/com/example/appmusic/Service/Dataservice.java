@@ -22,25 +22,40 @@ public interface Dataservice {
 
     @GET("playlistforcurren.php")
     Call<List<Playlist>> GetplaylistCurrentDay();
+
     @GET("chudevatheloaitrongngay.php")
     Call<ChuDeVaTheLoai> GetCategoryMusic();
+
     @GET("albumhot.php")
     Call<List<Album>> GetAlbumHot();
+
     @GET("baihatduocthich.php")
     Call<List<Baihat>> GetBaiHatHot();
+
     //tao phuong thuc tuong tac ben server gui du lieu len de lay phan du lieu quang cao ve
     @FormUrlEncoded
     @POST("danhsachbaihat.php")
     //gui du lieu len server qua phuong thuc @Field
     Call<List<Baihat>> GetDanhsachbaihattheoquangcao(@Field("idquangcao") String idquangcao);
+
     @FormUrlEncoded
     @POST("danhsachbaihat.php")
     Call<List<Baihat>> GetDanhsachbaihattheoplaylist(@Field("idplaylist") String idplaylist);
+
     @GET("danhsachcacplaylist.php")
     Call<List<Playlist>> GetDanhsachcacplaylist();
+
     @FormUrlEncoded
     @POST("danhsachbaihat.php")
     Call<List<Baihat>> GetDanhsachbaihattheotheloai(@Field("idtheloai") String idtheloai);
+
     @GET("tatcachude.php")
     Call<List<ChuDe>> GetAllChuDe();
+
+    @FormUrlEncoded
+    @POST("theloaitheochude.php")
+    Call<List<TheLoai>> GetTheloaitheochude(@Field("idchude") String idchude);
+
+    @GET("tatcaalbum.php")
+    Call<List<Album>> GetAllAlbum();
 }

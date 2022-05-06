@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.appmusic.Activity.DanhsachbaihatActivity;
 import com.example.appmusic.Activity.DanhsachtatcacacchudeActivity;
+import com.example.appmusic.Activity.DanhsachtheloaitheochudeActivity;
 import com.example.appmusic.Model.ChuDe;
 import com.example.appmusic.Model.ChuDeVaTheLoai;
 import com.example.appmusic.Model.TheLoai;
@@ -46,7 +47,7 @@ public class Fragment_ChuDe_TheLoai extends Fragment {
         textxemthemchudetheloai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getActivity(), DanhsachtatcacacchudeActivity.class);
+                Intent intent = new Intent(getActivity(), DanhsachtatcacacchudeActivity.class);
                 startActivity(intent);
             }
         });
@@ -84,6 +85,15 @@ public class Fragment_ChuDe_TheLoai extends Fragment {
                     cardView.setLayoutParams(layout);
                     cardView.addView(imageView);
                     linearLayout.addView(cardView);
+                    int finalI = i;
+                    imageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(getActivity(), DanhsachtheloaitheochudeActivity.class);
+                            intent.putExtra("chude",chuDeArrayList.get(finalI));
+                            startActivity(intent);
+                        }
+                    });
                 }
                 for (int j = 0; j < (chuDeArrayList.size()); j++) {
                     CardView cardView = new CardView(getActivity());

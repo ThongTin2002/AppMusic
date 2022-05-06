@@ -67,14 +67,15 @@ public class DanhsachbaihatActivity extends AppCompatActivity {
             setValueInView(playlist.getTen(), playlist.getHinhPlaylist());
             GetDataPlaylist(playlist.getIdPlaylist());
         }
-        if (theLoai!=null&&!theLoai.getTenTheLoai().equals("")){
-            setValueInView(theLoai.getTenTheLoai(),theLoai.getHinhTheLoai());
+        if (theLoai != null && !theLoai.getTenTheLoai().equals("")) {
+            setValueInView(theLoai.getTenTheLoai(), theLoai.getHinhTheLoai());
             GetDataTheLoai(theLoai.getIdTheLoai());
         }
     }
-    private void GetDataTheLoai(String idtheloai){
-        Dataservice dataservice=APIService.getService();
-        Call<List<Baihat>> callback=dataservice.GetDanhsachbaihattheotheloai(idtheloai);
+
+    private void GetDataTheLoai(String idtheloai) {
+        Dataservice dataservice = APIService.getService();
+        Call<List<Baihat>> callback = dataservice.GetDanhsachbaihattheotheloai(idtheloai);
         callback.enqueue(new Callback<List<Baihat>>() {
             @Override
             public void onResponse(Call<List<Baihat>> call, Response<List<Baihat>> response) {
@@ -91,6 +92,7 @@ public class DanhsachbaihatActivity extends AppCompatActivity {
         });
 
     }
+
     private void GetDataPlaylist(String idplaylist) {
         Dataservice dataservice = APIService.getService();
         Call<List<Baihat>> callback = dataservice.GetDanhsachbaihattheoplaylist(idplaylist);
@@ -180,8 +182,8 @@ public class DanhsachbaihatActivity extends AppCompatActivity {
             if (intent.hasExtra("itemplaylist")) {
                 playlist = (Playlist) intent.getSerializableExtra("itemplaylist");
             }
-            if (intent.hasExtra("idtheloai")){
-                theLoai= (TheLoai) intent.getSerializableExtra("idtheloai");
+            if (intent.hasExtra("idtheloai")) {
+                theLoai = (TheLoai) intent.getSerializableExtra("idtheloai");
             }
         }
 
