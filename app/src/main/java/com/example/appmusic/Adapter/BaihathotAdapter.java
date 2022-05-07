@@ -1,6 +1,7 @@
 package com.example.appmusic.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.appmusic.Activity.PlayNhacActivity;
 import com.example.appmusic.Model.Baihat;
 import com.example.appmusic.R;
 import com.example.appmusic.Service.APIService;
@@ -64,6 +66,14 @@ public class BaihathotAdapter extends RecyclerView.Adapter<BaihathotAdapter.View
             txtcasi = itemView.findViewById(R.id.textviewcasibaihathot);
             imghinh = itemView.findViewById(R.id.imageviewbaihathot);
             imgluotthich = itemView.findViewById(R.id.imageviewluotthich);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, PlayNhacActivity.class);
+                    intent.putExtra("cakhuc", baihatArrayList.get(getPosition()));
+                    context.startActivity(intent);
+                }
+            });
             imgluotthich.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -75,10 +85,10 @@ public class BaihathotAdapter extends RecyclerView.Adapter<BaihathotAdapter.View
                         public void onResponse(Call<String> call, Response<String> response) {
                             String ketqua = response.body();
                             if (ketqua != null && ketqua.equals("Success")){
-                                Toast.makeText(context, "Đã thích", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Da thich", Toast.LENGTH_SHORT).show();
                             }
                             else {
-                                Toast.makeText(context, "Bị lỗi", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Loi!!", Toast.LENGTH_SHORT).show();
                             }
                         }
 
