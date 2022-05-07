@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -58,6 +59,9 @@ public class DanhsachbaihatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_danhsachbaihat);
+        //kiem tra mang
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         DataIntent();
         anhxa();
         init();
@@ -140,6 +144,23 @@ public class DanhsachbaihatActivity extends AppCompatActivity {
         });
     }
 
+    //lay du lieu ten bai hat gan vao view toolbar
+    private void setValueInView(String ten, String hinh) {
+        collapsingToolbarLayout.setTitle(ten);
+        try {
+            URL url = new URL(hinh);
+            //dinh dang lai duoi dang bitmap
+            Bitmap bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+            BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), bitmap);
+            //gan layout vao collapsingToolbar
+            collapsingToolbarLayout.setBackground(bitmapDrawable);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Picasso.with(this).load(hinh).into(imgdanhsachcakhuc);
+    }
     private void GetDataQuangcao(String idquangcao) {
         Dataservice dataservice = APIService.getService();
         Call<List<Baihat>> callback = dataservice.GetDanhsachbaihattheoquangcao(idquangcao);
@@ -158,24 +179,6 @@ public class DanhsachbaihatActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    //lay du lieu ten bai hat gan vao view toolbar
-    private void setValueInView(String ten, String hinh) {
-        collapsingToolbarLayout.setTitle(ten);
-        try {
-            URL url = new URL(hinh);
-            //dinh dang lai duoi dang bitmap
-            Bitmap bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-            BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), bitmap);
-            //gan layout vao collapsingToolbar
-            collapsingToolbarLayout.setBackground(bitmapDrawable);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Picasso.with(this).load(hinh).into(imgdanhsachcakhuc);
     }
 
     private void init() {
@@ -220,14 +223,15 @@ public class DanhsachbaihatActivity extends AppCompatActivity {
             }
         }
     }
+
     //bat su kien phat tat ca bai hat trong danh sach khi click vao bieu tuong zingmp3
-    private void evenClick(){
+    private void evenClick() {
         floatingActionButton.setEnabled(true);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(DanhsachbaihatActivity.this,PlayNhacActivity.class);
-                intent.putExtra("cacbaihat",mangbaihat);
+                Intent intent = new Intent(DanhsachbaihatActivity.this, PlayNhacActivity.class);
+                intent.putExtra("cacbaihat", mangbaihat);
                 startActivity(intent);
             }
         });
