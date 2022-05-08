@@ -2,6 +2,7 @@ package com.example.appmusic.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
@@ -33,7 +34,7 @@ public class PlayNhacActivity extends AppCompatActivity {
     TextView txtTimesong, txtTotaltimesong;
     SeekBar sktime;
     ImageButton imgplay, imgrepeat, imgnext, imgpre, imgrandom;
-    ViewPager2 viewPagerplaynhac;
+    ViewPager viewPagerplaynhac;
     public static ArrayList<Baihat> mangbaihat = new ArrayList<>();
     public static ViewPagerPlaylistnhac adapternhac;
     Fragment_Dia_Nhac fragment_dia_nhac;
@@ -57,15 +58,16 @@ public class PlayNhacActivity extends AppCompatActivity {
 //
 //        super.onStart();
 //    }
+    //bat su kien click trong class playNhacActivity
     private void evenClick() {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 //b58 9p24
-                if (adapternhac.createFragment(1) != null) {
+                if (adapternhac.getItem(1) != null) {
                     if (mangbaihat.size() > 0) {
-                        fragment_dia_nhac.Playnhac(mangbaihat.get(0).getHinhBaiHat());
+                        fragment_dia_nhac.playNhac(mangbaihat.get(0).getHinhBaiHat());
                         handler.removeCallbacks(this);
                     } else {
                         handler.postDelayed(this, 300);
@@ -130,14 +132,15 @@ public class PlayNhacActivity extends AppCompatActivity {
             }
         });
         toolbarplaynhac.setTitleTextColor(Color.WHITE);
+
         fragment_play_danh_sach_cac_bai_hat = new Fragment_Play_Danh_Sach_Cac_Bai_Hat();
         fragment_dia_nhac = new Fragment_Dia_Nhac();
-        adapternhac = new ViewPagerPlaylistnhac(this);
+        adapternhac = new ViewPagerPlaylistnhac(getSupportFragmentManager());
         adapternhac.AddFragment(fragment_play_danh_sach_cac_bai_hat);
         adapternhac.AddFragment(fragment_dia_nhac);
         viewPagerplaynhac.setAdapter(adapternhac);
         //b53 8p14
-        fragment_dia_nhac = (Fragment_Dia_Nhac) adapternhac.createFragment(1);
+        fragment_dia_nhac = (Fragment_Dia_Nhac) adapternhac.getItem(1);
         if (mangbaihat.size() > 0) {
             getSupportActionBar().setTitle(mangbaihat.get(0).getTenBaiHat());
             new PlayMp3().execute(mangbaihat.get(0).getLinkBaiHat());
@@ -161,7 +164,7 @@ public class PlayNhacActivity extends AppCompatActivity {
                 mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
                 mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
-                    public void onCompletion(MediaPlayer mediaPlayer) {
+                    public void onCompletion(MediaPlayer mp) {
                         mediaPlayer.stop();
                         mediaPlayer.reset();
                     }

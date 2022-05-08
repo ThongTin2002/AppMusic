@@ -14,7 +14,7 @@ import com.example.appmusic.R;
 
 import java.util.ArrayList;
 
-public class PlaynhacAdapter extends RecyclerView.Adapter<PlaynhacAdapter.ViewHolder>{
+public class PlaynhacAdapter extends RecyclerView.Adapter<PlaynhacAdapter.ViewHolder> {
     Context context;
     ArrayList<Baihat> mangbaihat;
 
@@ -26,16 +26,16 @@ public class PlaynhacAdapter extends RecyclerView.Adapter<PlaynhacAdapter.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater=LayoutInflater.from(context);
-        View view=inflater.inflate(R.layout.dong_play_bai_hat,parent,false);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.dong_play_bai_hat, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Baihat baihat=mangbaihat.get(position);
+        Baihat baihat = mangbaihat.get(position);
         holder.txtcasi.setText(baihat.getCaSi());
-        holder.txtindex.setText(position+ 1 + "");
+        holder.txtindex.setText(position + 1 + "");
         holder.txttenbaihat.setText(baihat.getTenBaiHat());
     }
 
@@ -44,14 +44,14 @@ public class PlaynhacAdapter extends RecyclerView.Adapter<PlaynhacAdapter.ViewHo
         return mangbaihat.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
-        TextView txtindex,txttenbaihat,txtcasi;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView txtindex, txttenbaihat, txtcasi;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            txtcasi=itemView.findViewById(R.id.textviewplaynhactencasi);
-            txttenbaihat=itemView.findViewById(R.id.textviewplaynhactenbaihat);
-            txtindex=itemView.findViewById(R.id.textviewplaynhacindex);
+            txtcasi = itemView.findViewById(R.id.textviewplaynhactencasi);
+            txttenbaihat = itemView.findViewById(R.id.textviewplaynhactenbaihat);
+            txtindex = itemView.findViewById(R.id.textviewplaynhacindex);
         }
     }
 }

@@ -2,6 +2,7 @@ package com.example.appmusic.Fragment;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -28,17 +29,16 @@ public class Fragment_Dia_Nhac extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_dia_nhac, container, false);
-        circleImageView = view.findViewById(R.id.imageviewcircle);
+        circleImageView = (CircleImageView) view.findViewById(R.id.imageviewcircle);
         objectAnimator = ObjectAnimator.ofFloat(circleImageView, "rotation", 0f, 360f);
         objectAnimator.setDuration(10000);
         objectAnimator.setRepeatCount(ValueAnimator.INFINITE);
         objectAnimator.setRepeatMode(ValueAnimator.RESTART);
         objectAnimator.setInterpolator(new LinearInterpolator());
-//        objectAnimator.start();
+        objectAnimator.start();
         return view;
     }
-    public void Playnhac(String hinhanh) {
-        Picasso.with(getContext()).load(hinhanh).into(circleImageView);
-
+    public void playNhac(String hinhanh) {
+        Picasso.with(getActivity()).load(hinhanh).into(circleImageView);
     }
 }
