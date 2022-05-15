@@ -27,6 +27,7 @@ import com.example.appmusic.R;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class PlayNhacActivity extends AppCompatActivity {
 
@@ -40,6 +41,13 @@ public class PlayNhacActivity extends AppCompatActivity {
     Fragment_Dia_Nhac fragment_dia_nhac;
     Fragment_Play_Danh_Sach_Cac_Bai_Hat fragment_play_danh_sach_cac_bai_hat;
     MediaPlayer mediaPlayer;
+    //gia tri khi tua nhac
+    int position = 0;
+    //gia tri khi click lap lai
+    boolean repeat = false;
+    boolean checkrandom = false;
+    //gia tri chuyen bai
+    boolean next = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +102,156 @@ public class PlayNhacActivity extends AppCompatActivity {
                 }
             }
         });
+        //ham lap lai bai hat
+        imgrepeat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (repeat == false) {
+                    if (checkrandom == true) {
+                        checkrandom = false;
+                        imgrepeat.setImageResource(R.drawable.iconsyned);
+                        imgrandom.setImageResource(R.drawable.iconsuffle);
+                    }
+                    imgrepeat.setImageResource(R.drawable.iconsyned);
+                    repeat = true;
+
+                } else {
+                    imgrepeat.setImageResource(R.drawable.iconrepeat);
+                    repeat = false;
+                }
+            }
+        });
+        //phat nhac ngau nhien
+        imgrandom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (checkrandom == false) {
+                    if (repeat == true) {
+                        repeat = false;
+                        imgrepeat.setImageResource(R.drawable.iconshuffled);
+                        imgrandom.setImageResource(R.drawable.iconrepeat);
+                    }
+                    imgrandom.setImageResource(R.drawable.iconshuffled);
+                    checkrandom = true;
+
+                } else {
+                    imgrandom.setImageResource(R.drawable.iconsuffle);
+                    checkrandom = false;
+                }
+            }
+        });
+        //tua nhac
+        sktime.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                mediaPlayer.seekTo(seekBar.getProgress());
+            }
+        });
+        //bai hat tiep theo
+        imgnext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mangbaihat.size() > 0) {
+                    if (mediaPlayer.isPlaying() || mediaPlayer != null) {
+                        mediaPlayer.stop();
+                        mediaPlayer.release();
+                        mediaPlayer = null;
+
+                    }
+                    if (position < (mangbaihat.size())) {
+                        imgplay.setImageResource(R.drawable.iconpause);
+                        position++;
+                        if (repeat == true) {
+                            if (position == 0) {
+                                position = mangbaihat.size();
+                            }
+                            position -= 1;
+                        }
+                        if (checkrandom == true) {
+                            Random random = new Random();
+                            int index = random.nextInt(mangbaihat.size());
+                            if (index == position) {
+                                position = index - 1;
+                            }
+                            position = index;
+                        }
+                        if (position > (mangbaihat.size() - 1)) {
+                            position = 0;
+                        }
+                        new PlayMp3().execute(mangbaihat.get(position).getLinkBaiHat());
+                        fragment_dia_nhac.playNhac(mangbaihat.get(position).getHinhBaiHat());
+                        getSupportActionBar().setTitle(mangbaihat.get(position).getTenBaiHat());
+                        UpdateTime();
+                    }
+                }
+                imgpre.setClickable(false);
+                imgnext.setClickable(false);
+                Handler handler1 = new Handler();
+                handler1.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        imgpre.setClickable(true);
+                        imgnext.setClickable(true);
+                    }
+                }, 5000);
+            }
+        });
+        //tua ve truoc
+        imgpre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mangbaihat.size() > 0) {
+                    if (mediaPlayer.isPlaying() || mediaPlayer != null) {
+                        mediaPlayer.stop();
+                        mediaPlayer.release();
+                        mediaPlayer = null;
+
+                    }
+                    if (position < (mangbaihat.size())) {
+                        imgplay.setImageResource(R.drawable.iconpause);
+                        position--;
+                        if (position<0){
+                            position=mangbaihat.size()-1;
+                        }
+                        if (repeat == true) {
+                            position += 1;
+                        }
+                        if (checkrandom == true) {
+                            Random random = new Random();
+                            int index = random.nextInt(mangbaihat.size());
+                            if (index == position) {
+                                position = index - 1;
+                            }
+                            position = index;
+                        }
+                        new PlayMp3().execute(mangbaihat.get(position).getLinkBaiHat());
+                        fragment_dia_nhac.playNhac(mangbaihat.get(position).getHinhBaiHat());
+                        getSupportActionBar().setTitle(mangbaihat.get(position).getTenBaiHat());
+                        UpdateTime();
+                    }
+                }
+                imgpre.setClickable(false);
+                imgnext.setClickable(false);
+                Handler handler1 = new Handler();
+                handler1.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        imgpre.setClickable(true);
+                        imgnext.setClickable(true);
+                    }
+                }, 5000);
+            }
+        });
     }
 
     private void GetDataFromIntent() {
@@ -129,6 +287,9 @@ public class PlayNhacActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+                mediaPlayer.stop();
+                //tranh bi chong danh sach khi phat nhac
+                mangbaihat.clear();
             }
         });
         toolbarplaynhac.setTitleTextColor(Color.WHITE);
@@ -176,6 +337,7 @@ public class PlayNhacActivity extends AppCompatActivity {
             }
             mediaPlayer.start();
             TimeSong();
+            UpdateTime();
         }
     }
 
@@ -183,5 +345,83 @@ public class PlayNhacActivity extends AppCompatActivity {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("mm:ss");
         txtTotaltimesong.setText(simpleDateFormat.format(mediaPlayer.getDuration()));
         sktime.setMax(mediaPlayer.getDuration());
+    }
+    private void UpdateTime(){
+        //cap nhat thoi gian bai hat
+        Handler handler=new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mediaPlayer!=null){
+                    //cap nhat thoi gian len seakbar
+                    sktime.setProgress(mediaPlayer.getCurrentPosition());
+                    //dinh dang thoi gian
+                    SimpleDateFormat simpleDateFormat=new SimpleDateFormat("mm:ss");
+                    txtTimesong.setText(simpleDateFormat.format(mediaPlayer.getCurrentPosition()));
+                    //cap nhat lien tuc trong 0.3s
+                    handler.postDelayed(this,300);
+                    //lang nghe khi media chay hoan tat
+                    mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mediaPlayer) {
+                            next =true;
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+            }
+        },300);
+        //chuyen bai hat
+        Handler handler1=new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (next==true){
+                    if (position < (mangbaihat.size())) {
+                        imgplay.setImageResource(R.drawable.iconpause);
+                        position++;
+                        if (repeat == true) {
+                            if (position == 0) {
+                                position = mangbaihat.size();
+                            }
+                            position -= 1;
+                        }
+                        if (checkrandom == true) {
+                            Random random = new Random();
+                            int index = random.nextInt(mangbaihat.size());
+                            if (index == position) {
+                                position = index - 1;
+                            }
+                            position = index;
+                        }
+                        if (position > (mangbaihat.size() - 1)) {
+                            position = 0;
+                        }
+                        new PlayMp3().execute(mangbaihat.get(position).getLinkBaiHat());
+                        fragment_dia_nhac.playNhac(mangbaihat.get(position).getHinhBaiHat());
+                        getSupportActionBar().setTitle(mangbaihat.get(position).getTenBaiHat());
+                    }
+                imgpre.setClickable(false);
+                imgnext.setClickable(false);
+                Handler handler1 = new Handler();
+                handler1.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        imgpre.setClickable(true);
+                        imgnext.setClickable(true);
+                    }
+                }, 5000);
+                next=false;
+                //xoa su kien lang nghe de tao 1 thread moi
+                    handler1.removeCallbacks(this);
+                }else {
+                    handler1.postDelayed(this,1000);
+                }
+            }
+        },1000);
     }
 }
